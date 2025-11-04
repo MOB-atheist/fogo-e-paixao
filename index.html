@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .button-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: 10;
+        }
+
+        .button-container.hidden {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.8);
+            pointer-events: none;
+        }
+
+        .surprise-button {
+            background: linear-gradient(145deg, #ff4444, #cc0000);
+            border: none;
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+                        0 0 0 20px rgba(255, 68, 68, 0.2),
+                        inset 0 -5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: visible;
+        }
+
+        .surprise-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4),
+                        0 0 0 25px rgba(255, 68, 68, 0.3),
+                        inset 0 -5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .surprise-button:active {
+            transform: scale(0.95);
+        }
+
+        .surprise-button::before {
+            content: '🎀';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            z-index: 2;
+        }
+
+        .ribbon {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b6b, #ff4444);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .ribbon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: #ffd700;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            z-index: 5;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .video-container.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .instructions {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 18px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            opacity: 0.9;
+            transition: opacity 0.5s ease;
+        }
+
+        .instructions.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container" id="buttonContainer">
+        <div class="ribbon"></div>
+        <button class="surprise-button" id="surpriseButton"></button>
+    </div>
+
+    <div class="video-container" id="videoContainer">
+        <video id="surpriseVideo" controls autoplay muted>
+            <source src="cat.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <audio id="backgroundAudio" preload="auto">
+        <source src="foto-e-paixao.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <div class="instructions" id="instructions">
+        Click the button to reveal the surprise!
+    </div>
+
+    <script>
+        const buttonContainer = document.getElementById('buttonContainer');
+        const videoContainer = document.getElementById('videoContainer');
+        const surpriseButton = document.getElementById('surpriseButton');
+        const surpriseVideo = document.getElementById('surpriseVideo');
+        const backgroundAudio = document.getElementById('backgroundAudio');
+        const instructions = document.getElementById('instructions');
+
+        surpriseButton.addEventListener('click', function() {
+            // Hide button and instructions
+            buttonContainer.classList.add('hidden');
+            instructions.classList.add('hidden');
+            
+            // Show video after a short delay
+            setTimeout(() => {
+                videoContainer.classList.add('show');
+                surpriseVideo.play();
+                backgroundAudio.play();
+            }, 300);
+        });
+    </script>
+</body>
+</html>
