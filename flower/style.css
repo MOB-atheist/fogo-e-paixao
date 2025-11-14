@@ -10,13 +10,16 @@
   --dark-color: #000;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  position: relative;
   min-height: 100vh;
   background-color: var(--dark-color);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   perspective: 1000px;
 }
 
@@ -32,8 +35,12 @@ body {
 }
 
 .flowers {
-  position: relative;
-  transform: scale(0.9);
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  z-index: 100;
+  pointer-events: none;
 }
 
 .flower {
@@ -983,4 +990,61 @@ body {
 }
 .not-loaded * {
   animation-play-state: paused !important;
+}
+
+/* Message Container Styles */
+.message-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.message-container.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.message {
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  font-size: 2rem;
+  line-height: 1.6;
+  text-shadow: 0 0 10px rgba(107, 240, 255, 0.5), 0 0 20px rgba(107, 240, 255, 0.3);
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+  margin: 0 auto;
+  padding: 2rem 2.5rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 
+              inset 0 0 20px rgba(107, 240, 255, 0.1);
+}
+
+.message-paragraph {
+  margin: 1.5rem 0;
+  min-height: 1.6em; /* Prevent layout shift */
+}
+
+.message-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: word-appear 0.6s ease-out forwards;
+  margin-right: 0.3em; /* Add space between words */
+  white-space: nowrap; /* Prevent word breaking */
+}
+
+@keyframes word-appear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
